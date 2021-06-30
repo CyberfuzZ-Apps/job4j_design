@@ -15,11 +15,7 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        if (point < size) {
-            array[point++] = model;
-            return;
-        }
-        throw new ArrayIndexOutOfBoundsException();
+        array[point++] = model;
     }
 
     public void set(int index, T model) {
