@@ -1,9 +1,9 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -42,13 +42,21 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private void expand() {
         capacity *= 2;
-        table = Arrays.copyOf(table, capacity);
+        count = 0;
+        modCount = 0;
+        MapEntry<K, V>[] oldTable = table;
+        table = new MapEntry[capacity];
+        for (var el : oldTable) {
+            if (el != null) {
+                put(el.key, el.value);
+            }
+        }
     }
 
     @Override
     public V get(K key) {
         int index = key == null ? 0 : indexFor(hash(key.hashCode()));
-        if (table[index] != null) {
+        if (table[index] != null && Objects.equals(key, table[index].key)) {
             return table[index].value;
         }
         return null;
@@ -57,7 +65,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         int index = key == null ? 0 : indexFor(hash(key.hashCode()));
-        if (table[index] == null) {
+        if (table[index] == null || !Objects.equals(key, table[index].key)) {
             return false;
         }
         table[index] = null;
@@ -82,21 +90,16 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                for (int i = point; i < table.length; i++) {
-                    if (table[i] != null) {
-                        return true;
-                    }
+                while (point < capacity && table[point] == null) {
+                    point++;
                 }
-                return false;
+                return point < capacity;
             }
 
             @Override
             public K next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                while (table[point] == null) {
-                    point++;
                 }
                 return table[point++].key;
             }
