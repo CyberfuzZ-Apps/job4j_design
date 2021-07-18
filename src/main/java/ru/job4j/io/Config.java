@@ -22,9 +22,9 @@ public class Config {
                         if (s.contains("=")) {
                             String[] keyValue = s.split("=");
                             values.put(keyValue[0], keyValue.length == 2 ? keyValue[1] : null);
-                        } else {
-                            throw new IllegalArgumentException();
+                            return;
                         }
+                        throw new IllegalArgumentException();
                     });
         } catch (IOException e) {
             e.printStackTrace();
