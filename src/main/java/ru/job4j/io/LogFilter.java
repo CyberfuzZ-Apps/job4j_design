@@ -34,7 +34,9 @@ public class LogFilter {
                 new BufferedOutputStream(
                         new FileOutputStream(file)
                 ))) {
-            out.println(log);
+            for (var s : log) {
+                out.println(s);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
