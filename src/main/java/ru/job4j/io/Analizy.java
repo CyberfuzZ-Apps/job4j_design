@@ -26,14 +26,4 @@ public class Analizy {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        Analizy analizy = new Analizy();
-        String source = "/Users/cyberfuzz/projects/job4j_design/data/server1.log";
-        String target = "/Users/cyberfuzz/projects/job4j_design/data/analize_server_log1.csv";
-        analizy.unavailable(source, target);
-        source = "/Users/cyberfuzz/projects/job4j_design/data/server2.log";
-        target = "/Users/cyberfuzz/projects/job4j_design/data/analize_server_log2.csv";
-        analizy.unavailable(source, target);
-    }
 }
