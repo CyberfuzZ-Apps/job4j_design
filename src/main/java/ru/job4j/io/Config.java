@@ -19,12 +19,11 @@ public class Config {
             read.lines()
                     .filter(s -> !(s.isEmpty() || s.charAt(0) == '#'))
                     .forEach(s -> {
-                        if (s.contains("=")) {
-                            String[] keyValue = s.split("=");
-                            values.put(keyValue[0], keyValue.length == 2 ? keyValue[1] : null);
-                            return;
+                        if (!s.contains("=")) {
+                            throw new IllegalArgumentException();
                         }
-                        throw new IllegalArgumentException();
+                        String[] keyValue = s.split("=");
+                        values.put(keyValue[0], keyValue.length == 2 ? keyValue[1] : null);
                     });
         } catch (IOException e) {
             e.printStackTrace();
