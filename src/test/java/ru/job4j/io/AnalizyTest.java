@@ -18,13 +18,14 @@ public class AnalizyTest {
         File source = folder.newFile("source.txt");
         File target = folder.newFile("target.txt");
         try (PrintWriter out = new PrintWriter(source)) {
-            out.printf("%s%n",
-                    "200 10:56:01\n"
-                    + "500 10:57:01\n"
-                    + "400 10:58:01\n"
-                    + "200 10:59:01\n"
-                    + "500 11:01:02\n"
-                    + "200 11:02:02");
+            out.printf("""
+                    200 10:56:01
+                    500 10:57:01
+                    400 10:58:01
+                    500 10:59:01
+                    400 11:01:02
+                    200 11:02:02
+                    """);
         }
         Analizy analizy = new Analizy();
         analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
@@ -34,8 +35,9 @@ public class AnalizyTest {
                     .forEach(s -> sb.append(s).append("\n"));
         }
         assertThat(sb.toString(), is(
-                "10:57:01;10:59:01;\n"
-                + "11:01:02;11:02:02;\n"));
+                """
+                        10:57:01;11:02:02;
+                        """));
     }
 
     @Test
