@@ -29,7 +29,7 @@ public class SearchFiles implements FileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
             throws IOException {
         if (condition.test(file)) {
-            paths.add(file.getFileName().toAbsolutePath());
+            paths.add(file.toAbsolutePath());
         }
         return CONTINUE;
     }
