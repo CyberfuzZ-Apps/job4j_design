@@ -18,7 +18,6 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
                 file.getFileName().toString());
         if (files.putIfAbsent(property,
                 file.toAbsolutePath().toString()) != null) {
-            duplicates.add(files.get(property));
             duplicates.add(file.toAbsolutePath().toString());
         }
         return super.visitFile(file, attrs);
