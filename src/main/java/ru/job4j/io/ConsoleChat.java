@@ -23,17 +23,29 @@ public class ConsoleChat {
         return listAnswers.get(index);
     }
 
-    public void run() {
+    private void readAnswers() {
         try (BufferedReader reader = new BufferedReader(new FileReader(botAnswers))) {
             reader.lines()
                     .forEach(listAnswers::add);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void writeChat(List<String> recordList) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(path))) {
+            for (var s : recordList) {
+                writer.println(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void run() {
+        readAnswers();
         List<String> recordList = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-
         String welcome = """
                 Добро пожаловать в чат! Чем я могу Вам помочь?
                       ("стоп" - приостановить общение,
@@ -71,13 +83,7 @@ public class ConsoleChat {
             input = scanner.nextLine();
             recordList.add(input);
         }
-        try (PrintWriter writer = new PrintWriter(new FileWriter(path))) {
-            for (var s : recordList) {
-                writer.println(s);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeChat(recordList);
     }
 
     public static void main(String[] args) {
