@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<Student>
+    <fullTime>true</fullTime>
+    <yearOfStudy>3</yearOfStudy>
+    <name>Evgeniy</name>
+    <contact>
+        <name>Evgeniy</name>
+        <soname>Zaytsev</soname>
+        <age>20</age>
+        <phone>+7(926) 555-55-55</phone>
+    </contact>
+    <interests>
+        <interest>Coding</interest>
+        <interest>Gaming</interest>
+    </interests>
+</Student>
