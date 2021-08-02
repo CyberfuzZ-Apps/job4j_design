@@ -1,4 +1,1 @@
-/Users/cyberfuzz/projects/job4j_design/./data/ForArchiveTest/Dir2/Chap14/GraphW/GraphW.html
-/Users/cyberfuzz/projects/job4j_design/./data/ForArchiveTest/Dir2/Chap14/GraphDW/GraphDW.html
-/Users/cyberfuzz/projects/job4j_design/./data/ForArchiveTest/Dir1/Chap02/Array/Array.html
-/Users/cyberfuzz/projects/job4j_design/./data/ForArchiveTest/Dir1/Chap02/OrderedArray/Ordered.html
+/Users/cyberfuzz/projects/job4j_design/./data/ForArchiveTest/Dir2/readme.txt

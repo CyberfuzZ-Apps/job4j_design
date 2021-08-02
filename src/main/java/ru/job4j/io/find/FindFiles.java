@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Поиск файлов по критерию [#783]
@@ -42,14 +44,26 @@ public class FindFiles {
         Arguments arguments = Validates.validateArgs(args);
         Path dir = Paths.get(arguments.get("d"));
         Path target = Paths.get(arguments.get("o"));
-        String name = arguments.get("n");
-        Predicate<Path> condition = switch (arguments.get("t")) {
-            case "mask" -> path -> path.toFile().getName().endsWith(name.substring(1));
-            case "regex", "name" -> path -> path.endsWith(name);
-            default -> null;
-        };
-        FindFileVisitor fileVisitor = new FindFileVisitor(condition);
+        Predicate<Path> cond = condition(arguments.get("t"), arguments.get("n"));
+        FindFileVisitor fileVisitor = new FindFileVisitor(cond);
         Files.walkFileTree(dir, fileVisitor);
         WriteFile.writeToFile(fileVisitor.getFiles(), target);
+    }
+
+    private Predicate<Path> condition(String type, String name) {
+        return switch (type) {
+            case "name" -> path -> name.equals(path.getFileName().toString());
+            case "mask" -> path -> {
+                Pattern pattern = Pattern.compile("\\..++");
+                Matcher matcher = pattern.matcher(name);
+                if (!matcher.find()) {
+                    throw new IllegalArgumentException("Неверное расширение файла " + name);
+                }
+                return path.toFile().getName()
+                        .endsWith(name.toLowerCase().substring(matcher.start()));
+            };
+            case "regex" -> path -> path.toFile().getName().matches(name);
+            default -> null;
+        };
     }
 }
