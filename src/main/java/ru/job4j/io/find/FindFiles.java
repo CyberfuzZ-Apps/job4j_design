@@ -54,15 +54,24 @@ public class FindFiles {
         return switch (type) {
             case "name" -> path -> name.equals(path.getFileName().toString());
             case "mask" -> path -> {
-                Pattern pattern = Pattern.compile("\\..++");
-                Matcher matcher = pattern.matcher(name);
-                if (!matcher.find()) {
-                    throw new IllegalArgumentException("Неверное расширение файла " + name);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < name.length(); i++) {
+                    switch (name.charAt(i)) {
+                        case '*' -> sb.append(".*");
+                        case '?' -> sb.append(".{1}");
+                        case '.' -> sb.append("\\.");
+                        default -> sb.append(name.charAt(i));
+                    }
                 }
-                return path.toFile().getName()
-                        .endsWith(name.toLowerCase().substring(matcher.start()));
+                Pattern pattern = Pattern.compile(sb.toString());
+                Matcher matcher = pattern.matcher(path.toFile().getName());
+                return matcher.matches();
             };
-            case "regex" -> path -> path.toFile().getName().matches(name);
+            case "regex" -> path -> {
+                Pattern pattern = Pattern.compile(name);
+                Matcher matcher = pattern.matcher(path.toFile().getName());
+                return matcher.matches();
+            };
             default -> null;
         };
     }
