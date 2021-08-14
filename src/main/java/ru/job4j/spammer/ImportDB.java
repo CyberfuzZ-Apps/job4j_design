@@ -20,7 +20,9 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
                 String[] tokens = line.split(";");
-                users.add(new User(tokens[0], tokens[1]));
+                if (tokens.length > 1) {
+                    users.add(new User(tokens[0], tokens[1]));
+                }
             });
         }
         return users;
