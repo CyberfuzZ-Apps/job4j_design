@@ -1,0 +1,75 @@
+При создании в цикле 1000 объектов User в какой-то момент
+сборщик мусора начинает удалять объекты User, т.к. отсутствуют ссылки на них.
+Даже после цикла при выполнении метода info(), сборщик продолжает удалять объекты,
+прерывая (или ставя на паузу) выполнение метода info().
+
+
+VM Options - -Xmx5m -Xms4m
+
+Console:
+
+=== Environment state ===
+Free: 4211
+Total: 6144
+Max: 6144
+Removed Evgeniy  8
+Removed Evgeniy  162
+Removed Evgeniy  161
+Removed Evgeniy  160
+Removed Evgeniy  159
+Removed Evgeniy  158
+Removed Evgeniy  157
+Removed Evgeniy  156
+Removed Evgeniy  155
+Removed Evgeniy  154
+Removed Evgeniy  153
+Removed Evgeniy  152
+Removed Evgeniy  151
+=== Environment state ===
+Removed Evgeniy  150
+Removed Evgeniy  149
+Removed Evgeniy  148
+Removed Evgeniy  147
+Removed Evgeniy  146
+Removed Evgeniy  145
+Removed Evgeniy  144
+Removed Evgeniy  143
+Removed Evgeniy  142
+Removed Evgeniy  141
+Removed Evgeniy  140
+Removed Evgeniy  139
+Removed Evgeniy  138
+Removed Evgeniy  137
+Removed Evgeniy  136
+Removed Evgeniy  135
+Removed Evgeniy  134
+Removed Evgeniy  133
+Removed Evgeniy  132
+Removed Evgeniy  131
+Free: 4083
+Removed Evgeniy  130
+Total: 6144
+Removed Evgeniy  129
+Removed Evgeniy  128
+Removed Evgeniy  127
+Removed Evgeniy  126
+Removed Evgeniy  125
+Removed Evgeniy  124
+Removed Evgeniy  123
+Removed Evgeniy  122
+Removed Evgeniy  121
+Removed Evgeniy  120
+Removed Evgeniy  119
+Removed Evgeniy  118
+Removed Evgeniy  117
+Removed Evgeniy  116
+Removed Evgeniy  115
+Max: 6144
+Removed Evgeniy  114
+Removed Evgeniy  113
+Removed Evgeniy  112
+Removed Evgeniy  111
+Removed Evgeniy  110
+Removed Evgeniy  109
+
+Process finished with exit code 0

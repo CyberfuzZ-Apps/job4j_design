@@ -1,0 +1,58 @@
+(JDK 32 bit)
+
+Объект:
+заголовок = 8 байт
++ примитивные поля
++ ссылочные поля
++ выравнивание для кратности 8
+
+
+public class User {
+    private String name;
+    private int age;
+}
+
+User user1 = new User("Evgeniy", 39);
+
+Заголовок User = 8 байт
+поле int age = 4 байта
+поле String name (
+		заголовок = 8 байт
+		private final byte coder; = 1 байт
+		private int hash; = 4 байта
+		private boolean hashIsZero; = 1 бит
+		private final byte[] value (
+			заголовок = 8 байт
+			размер символов = 2 байта * 7 символов = 14 байт
+			выравнивание для кратности 8 = 2 байта
+			ИТОГО: 24 байта);
+		выравнивание для кратности 8 = 3 байта
+		ИТОГО: 40 байт
+		)
+выравнивание для кратности 8 = 4 байт
+
+ИТОГО: user1 = 56 байт
+
+
+
+User user2 = new User("Evgeniy Alekseevich Petrov", 23);
+
+Заголовок User = 8 байт
+поле int age = 4 байта
+поле String name (
+		заголовок = 8 байт
+		private final byte coder; = 1 байт
+		private int hash; = 4 байта
+		private boolean hashIsZero; = 1 бит
+		private final byte[] value (
+			заголовок = 8 байт
+			размер символов = 2 байта * 26 символов = 52 байт
+			выравнивание для кратности 8 = 4
+			ИТОГО: 64 байта);
+		выравнивание для кратности 8 = 3 байта
+		ИТОГО: 80 байт
+		)
+выравнивание для кратности 8 = 4 байт
+
+ИТОГО: user2 = 96 байт
+
