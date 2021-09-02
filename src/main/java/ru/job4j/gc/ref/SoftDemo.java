@@ -7,8 +7,16 @@ import java.util.List;
 
 public class SoftDemo {
     public static void main(String[] args) {
-        example1();
+        //example1();
         //example2();
+        String s = new String("Hello");
+        String s1 = "Hello";
+        System.out.println(s == s1); // false (ссылки не равны)
+
+        String st = new String("Hello").intern();
+        String st1 = "Hello";
+        System.out.println(st == st1); // true (ссылки равны)
+        // в st1 вернулась ссылка на ""Hello" из пула строк
     }
 
     private static void example1() {
@@ -16,14 +24,20 @@ public class SoftDemo {
         SoftReference<Object> soft = new SoftReference<>(strong);
         strong = null;
         // do something
-        strong = soft.get() != null ? soft.get() : new Object();
+        strong = soft.get();
+        if (strong == null) {
+            strong = new Object();
+        }
         System.out.println(strong);
 
         Object strong1 = new Object();
         WeakReference<Object> weak = new WeakReference<>(strong1);
         strong1 = null;
         // do something
-        strong1 = weak.get() != null ? weak.get() : new Object();
+        strong1 = weak.get();
+        if (strong1 == null) {
+            strong1 = new Object();
+        }
         System.out.println(strong1);
     }
 
