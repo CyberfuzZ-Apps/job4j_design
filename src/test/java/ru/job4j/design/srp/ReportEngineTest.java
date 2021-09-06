@@ -103,4 +103,32 @@ public class ReportEngineTest {
                         """);
         assertThat(engine.generate(em -> true, store), is(expect.toString()));
     }
+
+    @Test
+    public void whenJSONGenerated() {
+        MemStore store = new MemStore();
+        Employee worker = new Employee("Ivan", null, null, 100);
+        store.add(worker);
+        Report engine = new ReportEngine(store, new ReportJSON());
+        String expect = "{\"name\":\"Ivan\",\"salary\":100.0}\n";
+        assertThat(engine.generate(em -> true, store), is(expect));
+    }
+
+    @Test
+    public void whenXMLGenerated() {
+        MemStore store = new MemStore();
+        Employee worker = new Employee("Ivan", null, null, 150);
+        store.add(worker);
+        Report engine = new ReportEngine(store, new ReportXML());
+        String expect = """
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <employees>
+                    <employees>
+                        <name>Ivan</name>
+                        <salary>150.0</salary>
+                    </employees>
+                </employees>
+                """;
+        assertThat(engine.generate(em -> true, store), is(expect.toString()));
+    }
 }
