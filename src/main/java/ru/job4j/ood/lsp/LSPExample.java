@@ -1,30 +1,24 @@
 package ru.job4j.ood.lsp;
 
-public class LSPExample { // Parent
-    //some logic
+public class LSPExample {
     public int solution(int a, int b) {
+        if (a < 0 || b < 0) {
+            throw new IllegalArgumentException();
+        }
         return a + b;
     }
 }
 
-class ChildLSPExample extends LSPExample { //Child
-    // some OTHER logic
-    public int childSolution(int a, int b, int c) {
-        return a + b + c;
-    }
-}
-
-class Main {
-    public static void main(String[] args) {
-
-        /* Тут всё нормально работает */
-        ChildLSPExample childLSPExample = new ChildLSPExample();
-
-
-        /* Но если суб-тип заменить на базовый тип,
-         * то программа может упасть из-за не правильного наследования -
-         * нарушение LSP */
-        LSPExample lspExample = new ChildLSPExample(); // здесь метод childSolution() - не доступен.
+/*
+Нарушение LSP - предусловие усиленно в подклассе.
+ */
+class ChildLSPExample extends LSPExample {
+    @Override
+    public int solution(int a, int b) {
+        if (a < 10 || b < 10) {
+            throw new IllegalArgumentException();
+        }
+        return a + b;
     }
 }
 
