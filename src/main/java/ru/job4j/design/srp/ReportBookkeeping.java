@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.util.function.Predicate;
 
 public class ReportBookkeeping implements Report {
+    private Store store;
+
+    public ReportBookkeeping(Store store) {
+        this.store = store;
+    }
 
     @Override
-    public String generate(Predicate<Employee> filter, Store store) {
+    public String generate(Predicate<Employee> filter) {
         StringBuilder text = new StringBuilder();
         text.append("Name; Hired; Fired; Salary;");
         text.append(System.lineSeparator());

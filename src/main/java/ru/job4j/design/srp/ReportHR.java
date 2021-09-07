@@ -5,8 +5,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ReportHR implements Report {
+    private Store store;
+
+    public ReportHR(Store store) {
+        this.store = store;
+    }
+
     @Override
-    public String generate(Predicate<Employee> filter, Store store) {
+    public String generate(Predicate<Employee> filter) {
         List<Employee> list = store.findBy(filter);
         list.sort(Comparator.comparing(Employee::getSalary).reversed());
         StringBuilder text = new StringBuilder();
