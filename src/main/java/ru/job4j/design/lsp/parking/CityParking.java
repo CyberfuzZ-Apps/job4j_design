@@ -5,6 +5,11 @@ public class CityParking implements Parking {
     private Automobile[] automobile;
 
     @Override
+    public boolean park() {
+        return false;
+    }
+
+    @Override
     public int freeSpaces() {
         return 0;
     }
