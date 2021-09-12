@@ -1,11 +1,14 @@
 package ru.job4j.design.lsp.parking;
 
 public class CityParking implements Parking {
-    private int[] space;
-    private Automobile[] automobile;
 
     @Override
-    public boolean park() {
+    public boolean park(Automobile auto) {
+        return false;
+    }
+
+    @Override
+    public boolean takeAuto(Automobile auto) {
         return false;
     }
 
