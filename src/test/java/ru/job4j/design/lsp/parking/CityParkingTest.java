@@ -86,5 +86,4 @@ public class CityParkingTest {
         assertThat(parking.freeSpaces(), is(Map.of("Car", 9, "Truck", 0)));
         assertFalse(parking.park(auto2));
     }
-
 }
