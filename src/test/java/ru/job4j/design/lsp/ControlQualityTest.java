@@ -74,4 +74,23 @@ public class ControlQualityTest {
         controlQuality.distribution(food);
         assertThat(trash.getFoods(), is(List.of(food)));
     }
+
+    @Test
+    public void whenResort() {
+        Storage trash = new Trash();
+        Storage shop = new Shop();
+        Storage warehouse = new Warehouse();
+        List<Storage> storages = List.of(
+                trash, shop, warehouse
+        );
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDate expiryDate = LocalDate.now().minusDays(10);
+        LocalDate createDate = LocalDate.now().minusDays(100);
+        Food food = new Milk("Milk", expiryDate, createDate, 59.0, 0.0);
+        warehouse.addToStorage(food);
+        assertThat(warehouse.getFoods(), is(List.of(food)));
+        controlQuality.resort();
+        assertThat(warehouse.getFoods(), is(List.of()));
+        assertThat(trash.getFoods(), is(List.of(food)));
+    }
 }

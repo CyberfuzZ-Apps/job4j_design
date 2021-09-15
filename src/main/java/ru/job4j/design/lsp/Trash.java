@@ -18,6 +18,6 @@ public class Trash implements Storage {
 
     @Override
     public List<Food> getFoods() {
-        return List.copyOf(foods);
+        return foods;
     }
 }

@@ -25,6 +25,6 @@ public class Shop implements Storage {
 
     @Override
     public List<Food> getFoods() {
-        return List.copyOf(foods);
+        return foods;
     }
 }

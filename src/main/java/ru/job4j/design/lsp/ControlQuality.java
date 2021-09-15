@@ -1,5 +1,6 @@
 package ru.job4j.design.lsp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -17,4 +18,17 @@ public class ControlQuality {
             }
         }
     }
+
+    public void resort() {
+        List<Food> foods = new ArrayList<>();
+        for (Storage storage : storages) {
+            List<Food> f = storage.getFoods();
+            foods.addAll(f);
+            f.removeAll(f);
+        }
+        for (Food food : foods) {
+            distribution(food);
+        }
+    }
+
 }
