@@ -30,6 +30,10 @@ public class Task {
         return name;
     }
 
+    public List<Task> getChildrenTasks() {
+        return childrenTasks;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -47,14 +51,4 @@ public class Task {
         return Objects.hash(name);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder rsl = new StringBuilder(name + System.lineSeparator());
-        if (childrenTasks.size() != 0) {
-            for (Task task : childrenTasks) {
-                rsl.append(task.toString());
-            }
-        }
-        return rsl.toString();
-    }
 }
