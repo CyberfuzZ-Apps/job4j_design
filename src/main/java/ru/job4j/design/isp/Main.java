@@ -1,25 +1,39 @@
 package ru.job4j.design.isp;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс содержит древовидную структуру "Меню" (Task).
+ */
 public class Main implements Menu, Print {
-    private final List<Task> tasks = new ArrayList<>();
+    private final Task menu = new Task("Menu:", null);
+    private final StringBuilder prefix = new StringBuilder();
 
+    /**
+     * Метод добавляет пункт меню.
+     * @param adding - добавляемый пункт меню.
+     * @param toTask - в какой каталог добавить.
+     */
     @Override
-    public void addTask(Task task) {
-        tasks.add(task);
+    public void addTask(Task adding, Task toTask) {
+        Task rsl = findTask(toTask.getName());
+        rsl.addSubTask(adding);
     }
 
+    /**
+     * Метод ищет пункт меню по его названию. Возвращает найденный пункт меню,
+     * либо IllegalArgumentException - если пункт с таким названием не существует.
+     *
+     * @param name - название пункта меню.
+     * @return - найденный пункт меню.
+     * @throws IllegalArgumentException - если пункт не найден.
+     */
     @Override
-    public void addTaskToTask(Task task, Task where) {
-        Task rsl = findTask(where.getName());
-        rsl.addSubTask(task);
-    }
-
-    @Override
-    public Task findTask(String name) {
-        for (Task task : tasks) {
+    public Task findTask(String name) throws IllegalArgumentException {
+        if (name.equals(menu.getName())) {
+            return menu;
+        }
+        for (Task task : menu.getChildrenTasks()) {
             Task rsl = findChildrenTasks(task, name);
             if (rsl != null) {
                 return rsl;
@@ -46,16 +60,27 @@ public class Main implements Menu, Print {
         return null;
     }
 
+    /**
+     * Метод удаляет пункт меню. Возвращает true если пункт меню удалён,
+     * либо IllegalArgumentException - если пункт с таким названием не существует.
+     *
+     * @param name - название удаляемого пункта меню.
+     * @param menu - корневой пункт меню.
+     * @return - true - если пункт меню удален.
+     * @throws IllegalArgumentException - если пункт с таким названием не существует.
+     */
     @Override
-    public boolean deleteTask(String name) {
-        Task foundedTask = findTask(name);
-        if (tasks.removeIf(task -> task.equals(foundedTask))) {
+    public boolean deleteTask(String name, Task menu) throws IllegalArgumentException {
+        if (menu == this.menu) {
+            findTask(name);
+        }
+        List<Task> list = menu.getChildrenTasks();
+        if (list.removeIf(t -> t.getName().equals(name))) {
             return true;
         }
-        for (Task t : tasks) {
-            List<Task> children = t.getChildrenTasks();
-            if (children.size() > 0) {
-                if (deleteFromSubTask(children, foundedTask)) {
+        for (Task task : list) {
+            if (task.getChildrenTasks().size() > 0) {
+                if (deleteTask(name, task)) {
                     return true;
                 }
             }
@@ -63,47 +88,30 @@ public class Main implements Menu, Print {
         return false;
     }
 
-    private boolean deleteFromSubTask(List<Task> children, Task foundedTask) {
-        if (children.removeIf(task -> task.equals(foundedTask))) {
-            return true;
-        }
-        for (Task child : children) {
-            List<Task> subList = child.getChildrenTasks();
-            if (subList.size() > 0) {
-                return deleteFromSubTask(subList, foundedTask);
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Метод выводит в консоль список пунктов меню,
+     * в древовидной структуре.
+     *
+     * @param menu - корневой каталог меню.
+     */
     @Override
-    public void print() {
-        for (Task task : tasks) {
-            System.out.println(task.getName());
-            List<Task> children = task.getChildrenTasks();
-            if (children.size() > 0) {
-                StringBuilder sb = new StringBuilder();
-                subPrint(children, sb);
-            }
+    public void print(Task menu) {
+        if (menu == this.menu) {
+            System.out.println(menu.getName());
         }
-    }
-
-    private void subPrint(List<Task> children, StringBuilder sb) {
-        for (Task task : children) {
-            sb.append("---");
-            sb.append(task.getName());
-            System.out.println(sb);
-            sb.delete(3, sb.length());
-            List<Task> subList = task.getChildrenTasks();
-            if (subList.size() > 0) {
-                subPrint(subList, sb);
-                sb.setLength(0);
+        List<Task> list = menu.getChildrenTasks();
+        for (Task task : list) {
+            System.out.println(prefix + task.getName());
+            if (task.getChildrenTasks().size() > 0) {
+                prefix.append("---");
+                print(task);
+                prefix.delete(0, 3);
             }
         }
     }
 
     public static void main(String[] args) {
-        Main menu = new Main();
+        Main main = new Main();
         Action action = new FirstAction();
         Task task1 = new Task("Task 1", action);
         Task task11 = new Task("Task 1.1", action);
@@ -125,26 +133,27 @@ public class Main implements Menu, Print {
         Task task223 = new Task("Task 2.2.3", action);
         Task task3 = new Task("Task 3", action);
         Task task4 = new Task("Task 4", action);
-        menu.addTask(task1);
-        menu.addTask(task2);
-        menu.addTask(task3);
-        menu.addTask(task4);
-        menu.addTaskToTask(task11, task1);
-        menu.addTaskToTask(task12, task1);
-        menu.addTaskToTask(task21, task2);
-        menu.addTaskToTask(task22, task2);
-        menu.addTaskToTask(task111, task11);
-        menu.addTaskToTask(task112, task11);
-        menu.addTaskToTask(task113, task11);
-        menu.addTaskToTask(task121, task12);
-        menu.addTaskToTask(task122, task12);
-        menu.addTaskToTask(task123, task12);
-        menu.addTaskToTask(task211, task21);
-        menu.addTaskToTask(task212, task21);
-        menu.addTaskToTask(task213, task21);
-        menu.addTaskToTask(task221, task22);
-        menu.addTaskToTask(task222, task22);
-        menu.addTaskToTask(task223, task22);
-        menu.print();
+        main.addTask(task1, main.menu);
+        main.addTask(task2, main.menu);
+        main.addTask(task3, main.menu);
+        main.addTask(task4, main.menu);
+        main.addTask(task11, task1);
+        main.addTask(task12, task1);
+        main.addTask(task21, task2);
+        main.addTask(task22, task2);
+        main.addTask(task111, task11);
+        main.addTask(task112, task11);
+        main.addTask(task113, task11);
+        main.addTask(task121, task12);
+        main.addTask(task122, task12);
+        main.addTask(task123, task12);
+        main.addTask(task211, task21);
+        main.addTask(task212, task21);
+        main.addTask(task213, task21);
+        main.addTask(task221, task22);
+        main.addTask(task222, task22);
+        main.addTask(task223, task22);
+        main.addTask(new Task("Task 2.2.3.1", action), task223);
+        main.print(main.menu);
     }
 }
